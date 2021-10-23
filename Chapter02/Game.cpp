@@ -11,6 +11,7 @@
 #include <algorithm>
 #include "SDL/SDL_image.h"
 
+
 #include "Actor.h"
 #include "BGSpriteComponent.h"
 #include "Enemy.h"
@@ -20,13 +21,14 @@
 #include "SpriteComponent.h"
 #include "TextComponent.h"
 
+
 Game::Game()
 	:mWindow(nullptr)
 	, mRenderer(nullptr)
 	, mIsRunning(true)
 	, mUpdatingActors(false)
-	, mWindowWidth(920)
-	, mWindowHeight(460)
+	, mWindowWidth(440)
+	, mWindowHeight(440)
 	, mTicksCount(0)
 	, mShip(nullptr)
 	, mCoolDown(0)
@@ -232,24 +234,22 @@ void Game::LoadData()
 	bg->SetScreenSize(Vector2(GetWindowWidth(), GetWindowHeight()));//set the screen size for the background to fit in
 	//create a vector
 	std::vector<SDL_Texture*> bgtexs = {
-		GetTexture("Assets/Farback01.png"),
-		GetTexture("Assets/Farback02.png")
+		GetTexture("Assets/PlaceHolder.png")
 	};
 	//set this vector to the background component
 	bg->SetBGTextures(bgtexs);
-	bg->SetScrollSpeed(-100.0f);
+	bg->SetScrollSpeed(0.0f);
 	
 	// Create the closer background
 	bg = new BGSpriteComponent(temp, 50);
 	bg->SetScreenSize(Vector2(GetWindowWidth(), GetWindowHeight()));//set the screen size for the background to fit in
 	//create a vector
 	bgtexs = {
-		GetTexture("Assets/Stars.png"),
-		GetTexture("Assets/Stars.png")
+		GetTexture("Assets/PredioFundoPadrao.png")
 	};
 	//set this vector to the background component
 	bg->SetBGTextures(bgtexs);
-	bg->SetScrollSpeed(-200.0f);
+	bg->SetScrollSpeed(0.0f);
 
 	mText = new TextComponent(temp);
 	mText->SetText(mRenderer, "");
