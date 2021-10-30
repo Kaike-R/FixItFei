@@ -6,20 +6,18 @@
 // See LICENSE in root directory for full details.
 // ----------------------------------------------------------------
 
-#define BUFFSIZE 1024
-
 #include <algorithm>
 #include "SDL/SDL_image.h"
 
-
 #include "Actor.h"
 #include "BGSpriteComponent.h"
-#include "Enemy.h"
+#include "Building.h"
+#include "ChildActor.h"
 #include "Game.h"
-#include "Ship.h"
-#include "ShootComponent.h"
 #include "SpriteComponent.h"
 #include "TextComponent.h"
+
+#define BUFFSIZE 1024
 
 
 Game::Game()
@@ -33,6 +31,10 @@ Game::Game()
 	, mShip(nullptr)
 	, mCoolDown(0)
 	, mScore(0)
+	, mIsInTimeWarp(false)
+	, mFont(nullptr)
+	, mText(nullptr)
+	, mIsSpawning(false)
 {
 	
 }
@@ -106,8 +108,10 @@ void Game::ProcessInput()
 		mIsRunning = false;
 	}
 
+	// todo: Process Felix input
+
 	// Process ship input
-	mShip->ProcessKeyboard(state);
+	//mShip->ProcessKeyboard(state);
 }
 
 void Game::UpdateGame()
@@ -159,6 +163,7 @@ void Game::UpdateGame()
 		delete actor;
 	}
 
+	/*
 	auto& spawner = mSpawners.front();
 	if (mCoolDown < 1)
 	{
@@ -168,6 +173,7 @@ void Game::UpdateGame()
 		mSpawners.push(spawner);
 		mSpawners.pop();
 	}
+	*/
 
 	if (mCoolDown > 0) mCoolDown -= 1;
 
@@ -202,14 +208,17 @@ void Game::GenerateOutput()
 
 void Game::LoadData()
 {
+	// todo: Create Felix and Ralph
+
 	// Create player's ship
+	/*
 	mShip = new Ship(this);
 	mShip->SetPosition(Vector2(100.0f, 384.0f));
 	mShip->SetScale(1.5f);
+	*/
 
-	mFont = TTF_OpenFont("VT323-Regular.ttf", 24);
-
-
+	// enemy spawners' positions
+	/*
 	Actor* top = new Actor(this);
 	top->SetPosition(Vector2(GetWindowWidth(), GetWindowHeight() / 4.0f));
 	
@@ -223,11 +232,17 @@ void Game::LoadData()
 	mSpawners.push(new ShootComponent<Enemy>(top));
 	mSpawners.push(new ShootComponent<Enemy>(middle));
 	mSpawners.push(new ShootComponent<Enemy>(bottom));
+	*/
 
-	//--------------------------------Criação do background----------------------------
+	// Create background
+	float windowWidth = GetWindowWidth();
+	float windowHeight = GetWindowHeight();
+	Vector2 windowPos = Vector2(windowWidth / 2.0f, windowHeight / 2.0f);
+
 	// Create actor for the background (this doesn't need a subclass)
-	Actor* temp = new Actor(this);
-	temp->SetPosition(Vector2(GetWindowWidth() / 2.0f , GetWindowHeight() / 2.0f));
+	Actor* temp = new ChildActor(this, 
+		windowPos.x, windowPos.y, 
+		windowWidth, windowHeight);
 	
 	// Create the "far back" background
 	BGSpriteComponent* bg = new BGSpriteComponent(temp);
@@ -240,16 +255,13 @@ void Game::LoadData()
 	bg->SetBGTextures(bgtexs);
 	bg->SetScrollSpeed(0.0f);
 	
-	// Create the closer background
-	bg = new BGSpriteComponent(temp, 50);
-	bg->SetScreenSize(Vector2(GetWindowWidth(), GetWindowHeight()));//set the screen size for the background to fit in
-	//create a vector
-	bgtexs = {
-		GetTexture("Assets/PredioFundoPadrao.png")
-	};
-	//set this vector to the background component
-	bg->SetBGTextures(bgtexs);
-	bg->SetScrollSpeed(0.0f);
+	// Create the building
+	Building* predio = new Building(this, 
+		windowPos.x, windowPos.y, 
+		windowWidth, windowHeight);
+
+	// To write text on screen
+	mFont = TTF_OpenFont("VT323-Regular.ttf", 24);
 
 	mText = new TextComponent(temp);
 	mText->SetText(mRenderer, "");

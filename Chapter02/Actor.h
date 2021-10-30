@@ -43,8 +43,10 @@ public:
 	class Game* GetGame() { return mGame; }
 
 	float GetWidth() const { return mWidth; }
-	float GetHeight() const { return mHeight; }
+	void SetWidth(float w) { mWidth = w; }
 
+	float GetHeight() const { return mHeight; }
+	void SetHeight(float h) { mHeight = h; }
 
 	// insere e remove componentes
 	void AddComponent(class Component* component);

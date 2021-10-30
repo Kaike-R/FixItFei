@@ -1,25 +1,35 @@
 #include "GridComponent.h"
 
 template <class G>
-GridComponent<G>::GridComponent(int e, float w, float h, bool flag, float xActorCord, float yActorCord)
-    : numElements(e), width(w), height(h), isHorizontal(flag), xActorCord(xActorCord), yActorCord(yActorCord)
+GridComponent<G>::GridComponent(Actor* owner, int e, 
+    bool isHorizontal, 
+    int updateOrder)
+    :Component(owner, updateOrder), numElements(e), isHorizontal(isHorizontal)
 {
     Grid.resize(numElements);
+    width = owner->GetWidth();
+    height = owner->GetHeight();
+    Vector2 ownerPos = owner->GetPosition();
+    xOwner = ownerPos.x;
+    yOwner = ownerPos.y;
+
+    FillGrid();
 }
 
 template <class G>
 void GridComponent<G>::FillGrid()
 {
+    Game* game = mOwner->GetGame();
+
     if (isHorizontal) {
         float wElement = width / numElements;
         float hElement = height;
-        float yElement = yActorCord;
-        float firstX = xActorCord - width / 2 + wElement / 2;
+        float yElement = yOwner;
+        float firstX = xOwner - width / 2 + wElement / 2;
 
-        for (int i = 0; i < numElement; i++) {
+        for (int i = 0; i < numElements; i++) {
             float xElement = firstX + i*wElement;
-            G* mElement = new G(xElement, yElement, wElement, hElement);
-
+            G* mElement = new G(game, xElement, yElement, wElement, hElement);
         }
     }
 
@@ -27,15 +37,12 @@ void GridComponent<G>::FillGrid()
 
         float wElement = width;
         float hElement = height / numElements;
-        float xElement = xActorCord;
-        float firstY = yActorCord - height/ 2 + hElement / 2;
+        float xElement = xOwner;
+        float firstY = yOwner - height/ 2 + hElement / 2;
 
-        for (int i = 0; i < numElement; i++) {
+        for (int i = 0; i < numElements; i++) {
             float yElement = firstY + i * hElement;
-            G* mElement = new G(xElement, yElement, wElement, hElement);
-
+            G* mElement = new G(game, xElement, yElement, wElement, hElement);
         }
-
     }
-
 }

@@ -1,8 +1,8 @@
 #pragma once
 #include "Component.h"
 #include "vector"
-#include "Andar.h"
-
+#include "Floor.h"
+#include "Window.h"
 
 template <class G>
 class GridComponent :
@@ -13,19 +13,17 @@ public:
     int numElements;
     float width;
     float height;
-    float xActorCord;
-    float yActorCord;
+    float xOwner;
+    float yOwner;
     bool isHorizontal; // True: horizontal / False: Vertical
-
     
-    GridComponent(int e, float w, float h, bool flag, float xActorCord, float yActorCord);
+    GridComponent(Actor* owner, int e, 
+        bool isHorizontal = true, 
+        int updateOrder = 100);
+
     void FillGrid();
     
 };
 
-
-template class GridComponent<Andar>;
-template class GridComponent<Janela>;
-
-
-
+template class GridComponent<Floor>;
+template class GridComponent<Window>;

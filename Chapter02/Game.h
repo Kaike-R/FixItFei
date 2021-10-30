@@ -46,9 +46,9 @@ public:
 	
 	SDL_Texture* GetTexture(const std::string& fileName);
 
-	void SetTimeWarp(bool tFlag) { isInTimeWarp = tFlag; };
+	void SetTimeWarp(bool tFlag) { mIsInTimeWarp = tFlag; };
 
-	bool GetTimeWarp() { return isInTimeWarp; };
+	bool GetTimeWarp() { return mIsInTimeWarp; };
 
 	void DrawText(const char* fmt, ...);
 
@@ -92,7 +92,7 @@ private:
 	bool mIsSpawning;
 	int mCoolDown;
 
-	bool isInTimeWarp;
+	bool mIsInTimeWarp;
 
 	TTF_Font* mFont;
 	int mScore;
