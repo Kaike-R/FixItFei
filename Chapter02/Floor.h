@@ -1,5 +1,8 @@
 #pragma once
 #include "ChildActor.h"
+#include "Window.h"
+#include "GridComponent.h"
+
 class Floor :
     public ChildActor
 {
@@ -9,6 +12,8 @@ public:
     void UpdateActor(float deltaTime) override;
 
 protected:
+
+    GridComponent<Window>* mGrid;
 
 };
 

@@ -9,6 +9,8 @@ public:
     void UpdateActor(float deltaTime) override;
 
 protected:
+    bool isBroken = false;
+    
 
 };
 
