@@ -64,6 +64,9 @@
     <ClCompile Include="Building.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Felix.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CollideComponent.h" />
@@ -84,5 +87,6 @@
     <ClInclude Include="Window.h" />
     <ClInclude Include="ChildActor.h" />
     <ClInclude Include="Building.h" />
+    <ClInclude Include="Felix.h" />
   </ItemGroup>
 </Project>

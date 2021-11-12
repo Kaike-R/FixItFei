@@ -15,6 +15,7 @@
 #include <cstdarg>
 
 #include "Enemy.h"
+#include "Felix.h"
 #include "ShootComponent.h"
 
 #include "CollideComponent.h"
@@ -86,7 +87,8 @@ private:
 	bool mUpdatingActors;
 
 	// Game-specific
-	class Ship* mShip; // Player's ship
+	// Player
+	class Felix* mFelix; 
 
 	std::queue<ShootComponent<Enemy>*> mSpawners;
 	bool mIsSpawning;

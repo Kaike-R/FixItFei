@@ -28,7 +28,7 @@ Game::Game()
 	, mWindowWidth(440)
 	, mWindowHeight(440)
 	, mTicksCount(0)
-	, mShip(nullptr)
+	, mFelix(nullptr)
 	, mCoolDown(0)
 	, mScore(0)
 	, mIsInTimeWarp(false)
@@ -108,10 +108,8 @@ void Game::ProcessInput()
 		mIsRunning = false;
 	}
 
-	// todo: Process Felix input
-
-	// Process ship input
-	//mShip->ProcessKeyboard(state);
+	// Process Felix input
+	mFelix->ProcessKeyboard(state);
 }
 
 void Game::UpdateGame()
@@ -188,7 +186,7 @@ void Game::UpdateGame()
 		}
 	}
 
-	mText->SetText(mRenderer, "\nMissed Alien Ships: %3d", mScore);
+	//mText->SetText(mRenderer, "\nMissed Alien Ships: %3d", mScore);
 }
 
 void Game::GenerateOutput()
@@ -210,12 +208,15 @@ void Game::LoadData()
 {
 	// todo: Create Felix and Ralph
 
-	// Create player's ship
-	/*
-	mShip = new Ship(this);
-	mShip->SetPosition(Vector2(100.0f, 384.0f));
-	mShip->SetScale(1.5f);
-	*/
+	float wWidth = GetWindowWidth();
+	float wHeight = GetWindowHeight();
+
+	// Create player
+	mFelix = new Felix(this);
+	float fHeight = mFelix->GetHeight();
+
+	mFelix->SetPosition(Vector2(wWidth / 2.0f, wHeight - fHeight / 2.0f));
+	//mShip->SetScale(1.5f);
 
 	// enemy spawners' positions
 	/*
