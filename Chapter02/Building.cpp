@@ -20,7 +20,7 @@ Building::Building(Game* game, float x, float y,
 	bg->SetBGTextures(bgtexs);
 	bg->SetScrollSpeed(0.0f);
 
-	mGrid = new GridComponent<Floor>(this, 4, 0.1, 0.05, false);
+	mGrid = new GridComponent<Floor>(this, 4, 0.15, 0.01, 0.05, false);
 }
 
 void Building::UpdateActor(float deltaTime)

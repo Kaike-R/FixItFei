@@ -15,9 +15,11 @@ public:
     float yOwner;
     float xPadding;
     float yPadding;
+    float spacing;
     bool isHorizontal; // True: horizontal / False: Vertical
     
-    GridComponent(Actor* owner, int e, float xP, float yP, 
+    GridComponent(Actor* owner, int e, 
+        float xP, float yP, float sp, 
         bool isHorizontal = true, 
         int updateOrder = 100);
 

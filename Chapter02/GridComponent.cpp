@@ -6,16 +6,23 @@ template class GridComponent<Floor>;
 template class GridComponent<Window>;
 
 template <class G>
-GridComponent<G>::GridComponent(Actor* owner, int e, float xP, float yP,
+GridComponent<G>::GridComponent(Actor* owner, int e, 
+    float xP, float yP, float sp,
     bool isHorizontal, 
     int updateOrder)
-    :Component(owner, updateOrder), numElements(e), isHorizontal(isHorizontal), xPadding(xP), yPadding(yP)
+    :Component(owner, updateOrder), 
+    numElements(e), 
+    isHorizontal(isHorizontal), 
+    xPadding(xP), 
+    yPadding(yP), 
+    spacing(sp)
 {
     Grid.resize(numElements);
     width = owner->GetWidth();
     height = owner->GetHeight();
     xPadding = xPadding * width;
     yPadding = yPadding * height;
+    spacing *= isHorizontal ? width : height;
     width -= 2 * xPadding;
     height -= 2 * yPadding;
     Vector2 ownerPos = owner->GetPosition();
@@ -31,13 +38,13 @@ void GridComponent<G>::FillGrid()
     Game* game = mOwner->GetGame();
 
     if (isHorizontal) {
-        float wElement = width / numElements;
+        float wElement = (width - spacing * (numElements - 1) ) / numElements;
         float hElement = height;
         float yElement = yOwner;
-        float firstX = xOwner - width / 2 + wElement / 2 + xPadding;
+        float firstX = xOwner - width / 2 + wElement / 2;
 
         for (int i = 0; i < numElements; i++) {
-            float xElement = firstX + i*wElement;
+            float xElement = firstX + i * (spacing + wElement);
             G* mElement = new G(game, xElement, yElement, wElement, hElement);
         }
     }
@@ -45,12 +52,12 @@ void GridComponent<G>::FillGrid()
     else{
 
         float wElement = width;
-        float hElement = height / numElements;
+        float hElement = (height - spacing * (numElements - 1) ) / numElements;
         float xElement = xOwner;
-        float firstY = yOwner - height/ 2 + hElement / 2 + yPadding;
+        float firstY = yOwner - height/ 2 + hElement / 2;
 
         for (int i = 0; i < numElements; i++) {
-            float yElement = firstY + i * hElement;
+            float yElement = firstY + i * (spacing + hElement);
             G* mElement = new G(game, xElement, yElement, wElement, hElement);
         }
     }
