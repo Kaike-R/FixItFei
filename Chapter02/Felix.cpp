@@ -6,6 +6,7 @@ Felix::Felix(Game* game)
 	:Actor(game, false)
 	,mRightSpeed(0.0f)
 	,mDownSpeed(0.0f)
+	,mAnimState(AnimState::Walking)
 {
 	mAsc = new AnimSpriteComponent(this);
 
@@ -41,6 +42,8 @@ Felix::Felix(Game* game)
 	mWidth = mAsc->GetTexWidth();
 	mHeight = mAsc->GetTexHeight();
 
+	mJumper = new JumpComponent(this, 5 * mHeight);
+
 	mIsFixing = false;
 	mCoolDown = 0;
 }
@@ -48,6 +51,12 @@ Felix::Felix(Game* game)
 void Felix::UpdateActor(float deltaTime)
 {
 	Actor::UpdateActor(deltaTime);
+
+	if (!mJumper->IsJumping() &&
+		mAnimState == AnimState::Jumping)
+	{
+		mAnimState = AnimState::Walking;
+	}
 
 	if (mIsFixing)
 	{
@@ -70,6 +79,9 @@ void Felix::UpdateActor(float deltaTime)
 	float wWidth  = GetGame()->GetWindowWidth();
 	float wHeight = GetGame()->GetWindowHeight();
 
+	// todo: collide with floors
+
+
 	if (pos.x < GetWidth() / 2.0f)
 	{
 		pos.x = GetWidth() / 2.0f;
@@ -86,6 +98,8 @@ void Felix::UpdateActor(float deltaTime)
 	else if (pos.y > wHeight - GetHeight() / 2.0f)
 	{
 		pos.y = wHeight - GetHeight() / 2.0f;
+
+		mJumper->EndJump();
 	}
 
 	SetPosition(pos);
@@ -96,36 +110,69 @@ void Felix::ProcessKeyboard(const uint8_t* state)
 	mRightSpeed = 0.0f;
 	
 	// todo: account for gravity on jumps
-	mDownSpeed = 0.0f;
+	//mDownSpeed = 0.0f;
 
 	// left/ right
 	if (state[SDL_SCANCODE_A])
 	{
 		mRightSpeed -= 250.0f;
-		mAsc->SetAnimTextures(mAnimsWalk);
+
+		if (!mJumper->IsJumping() && 
+			mAnimState != AnimState::Walking)
+		{
+			mAsc->SetAnimTextures(mAnimsWalk);
+			mAnimState = AnimState::Walking;
+		}
 	}
 	if (state[SDL_SCANCODE_D])
 	{
 		mRightSpeed += 250.0f;
-		mAsc->SetAnimTextures(mAnimsWalk);
+
+		if (!mJumper->IsJumping() && 
+			mAnimState != AnimState::Walking)
+		{
+			mAsc->SetAnimTextures(mAnimsWalk);
+			mAnimState = AnimState::Walking;
+		}
 	}
 
 	// up/ down
 	if (state[SDL_SCANCODE_W])
 	{
-		mDownSpeed -= 250.0f;
-		mAsc->SetAnimTextures(mAnimsJump);
+		mJumper->Jump();
+
+		//mDownSpeed -= 250.0f;
+		
+		if (mAnimState != AnimState::Jumping)
+		{
+			//mAsc->SetAnimTextures(mAnimsJump);
+			mAnimState = AnimState::Jumping;
+		}
 	}
 	if (state[SDL_SCANCODE_S])
 	{
-		mDownSpeed += 250.0f;
-		mAsc->SetAnimTextures(mAnimsJump);
+		// todo: fall faster
+		// or squat
+
+		//mDownSpeed += 250.0f;
+
+		if (mAnimState != AnimState::Jumping)
+		{
+			//mAsc->SetAnimTextures(mAnimsJump);
+			mAnimState = AnimState::Jumping;
+		}
 	}
 
 	if (state[SDL_SCANCODE_P])
 	{
-		mIsFixing = true;
-		// mFixer->Fix();
+		//mIsFixing = true;
+		//mFixer->Fix();
+
+		if (mAnimState != AnimState::Fixing)
+		{
+			mAsc->SetAnimTextures(mAnimsFix);
+			mAnimState = AnimState::Fixing;
+		}
 	}
 
 	// Time warp
