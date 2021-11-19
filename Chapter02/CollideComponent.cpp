@@ -7,6 +7,8 @@
 CollideComponent::CollideComponent(class Actor* owner, int updateOrder)
 	: Component(owner, updateOrder)
 {
+	//printf("Collider.w = %.2f\n", owner->GetWidth());
+
 	mOwner->GetGame()->AddCollider(this);
 
 }
@@ -17,7 +19,6 @@ CollideComponent::~CollideComponent()
 
 bool CollideComponent::Collide(Actor* other) 
 {
-
 	if (other == mOwner) {
 		return false;
 	}
@@ -28,11 +29,11 @@ bool CollideComponent::Collide(Actor* other)
 
 	Vector2 ownerPos = mOwner->GetPosition();
 	float ownerHeight = mOwner->GetHeight();
-	float ownerWidth = mOwner->GetHeight();
+	float ownerWidth = mOwner->GetWidth();
 
-	return ((ownerPos.x < otherPos.x + otherWidth / 2.0f &&
-		otherPos.x < ownerPos.x + ownerWidth / 2.0f) &&
-		(ownerPos.y < otherPos.y + otherHeight / 2.0f &&
-			otherPos.y < ownerPos.y + otherHeight / 2.0f));
+	return ( (ownerPos.x - ownerWidth / 2.0f < otherPos.x + otherWidth / 2.0f &&
+		      otherPos.x - otherWidth / 2.0f < ownerPos.x + ownerWidth / 2.0f) &&
+		     (ownerPos.y - ownerHeight < otherPos.y + otherHeight / 2.0f &&
+			  otherPos.y - otherHeight < ownerPos.y + ownerHeight / 2.0f));
 
 }

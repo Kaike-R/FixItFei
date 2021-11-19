@@ -10,6 +10,8 @@ public:
         int updateOrder = 100);
     ~JumpComponent();
 
+    void Fall();
+
     void Jump();
     void EndJump() { mIsJumping = false; }
 

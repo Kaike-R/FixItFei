@@ -8,23 +8,23 @@ template class GridComponent<Window>;
 template <class G>
 GridComponent<G>::GridComponent(Actor* owner, int e, 
     float xP, float yP, float sp,
-    bool isHorizontal, 
+    bool isH, 
     int updateOrder)
     :Component(owner, updateOrder), 
     numElements(e), 
-    isHorizontal(isHorizontal), 
-    xPadding(xP), 
-    yPadding(yP), 
-    spacing(sp)
+    isHorizontal(isH)
 {
-    Grid.resize(numElements);
+    //Grid.resize(numElements);
     width = owner->GetWidth();
     height = owner->GetHeight();
-    xPadding = xPadding * width;
-    yPadding = yPadding * height;
-    spacing *= isHorizontal ? width : height;
+
+    xPadding = xP * width;
+    yPadding = yP * height;
+    spacing = sp * (isH ? width : height);
+
     width -= 2 * xPadding;
     height -= 2 * yPadding;
+
     Vector2 ownerPos = owner->GetPosition();
     xOwner = ownerPos.x;
     yOwner = ownerPos.y;
@@ -49,8 +49,8 @@ void GridComponent<G>::FillGrid()
         }
     }
 
+    // vertical
     else{
-
         float wElement = width;
         float hElement = (height - spacing * (numElements - 1) ) / numElements;
         float xElement = xOwner;

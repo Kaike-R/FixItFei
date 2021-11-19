@@ -80,6 +80,35 @@ void Felix::UpdateActor(float deltaTime)
 	float wHeight = GetGame()->GetWindowHeight();
 
 	// todo: collide with floors
+	auto colliders = GetGame()->GetColliders();
+
+	bool collidedAny = false;
+	for (CollideComponent* c : colliders)
+	{
+		if (c->Collide(this) && mDownSpeed >= 0) 
+		{
+			Vector2 cPos = c->GetOwner()->GetPosition();
+			float cHeight = c->GetOwner()->GetHeight();
+
+			float cBottom = cPos.y + cHeight / 2.0f;
+
+			if ( (pos.y < cBottom) &&
+				 (pos.y > cBottom - GetHeight() / 2.0f))
+			{
+				pos.y = cBottom - GetHeight() / 2.0f;
+
+				collidedAny = true;
+				mDownSpeed = 0;
+				mJumper->EndJump();
+			}
+		}
+	}
+
+	if (!collidedAny)
+	{
+		mJumper->Fall();
+	}
+
 
 
 	if (pos.x < GetWidth() / 2.0f)
@@ -91,11 +120,11 @@ void Felix::UpdateActor(float deltaTime)
 		pos.x = wWidth - GetWidth() / 2.0f;
 	}
 
-	if (pos.y < GetHeight() / 2.0f)
+	/*if (pos.y < GetHeight() / 2.0f)
 	{
 		pos.y = GetHeight() / 2.0f;
 	}
-	else if (pos.y > wHeight - GetHeight() / 2.0f)
+	else */if (pos.y > wHeight - GetHeight() / 2.0f)
 	{
 		pos.y = wHeight - GetHeight() / 2.0f;
 

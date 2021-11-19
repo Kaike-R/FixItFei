@@ -1,7 +1,8 @@
 #pragma once
 #include "ChildActor.h"
-#include "Window.h"
+#include "CollideComponent.h"
 #include "GridComponent.h"
+#include "Window.h"
 
 class Floor :
     public ChildActor
@@ -14,6 +15,7 @@ public:
 protected:
 
     GridComponent<Window>* mGrid;
+    CollideComponent* mCollider;
 
 };
 

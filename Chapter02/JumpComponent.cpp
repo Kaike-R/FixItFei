@@ -30,6 +30,18 @@ void JumpComponent::Jump()
 	}
 }
 
+void JumpComponent::Fall()
+{
+	if (!mIsJumping)
+	{
+		Felix* felix = GetFelix();
+
+		felix->SetDownSpeed(0);
+
+		mIsJumping = true;
+	}
+}
+
 void JumpComponent::Update(float deltaTime) 
 {
 	if (mIsJumping)

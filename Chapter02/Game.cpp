@@ -175,16 +175,16 @@ void Game::UpdateGame()
 
 	if (mCoolDown > 0) mCoolDown -= 1;
 
-	for (auto collider : mColliders) {
-		for (auto& actor : mActors) {
+	//for (auto collider : mColliders) {
+	//	for (auto& actor : mActors) {
 
-			if (std::find_if(mColliders.begin(), mColliders.end(), 
-				[&](CollideComponent* c) -> bool { return c->GetOwner() == actor; }) != mColliders.end() && 
-				(collider->Collide(actor))) {
-				actor->SetState(Actor::State::EDead);
-			}
-		}
-	}
+	//		if (std::find_if(mColliders.begin(), mColliders.end(), 
+	//			[&](CollideComponent* c) -> bool { return c->GetOwner() == actor; }) != mColliders.end() && 
+	//			(collider->Collide(actor))) {
+	//			actor->SetState(Actor::State::EDead);
+	//		}
+	//	}
+	//}
 
 	//mText->SetText(mRenderer, "\nMissed Alien Ships: %3d", mScore);
 }

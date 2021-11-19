@@ -38,6 +38,8 @@ public:
 	void AddCollider(class CollideComponent* collider);
 	void RemoveCollider(class CollideComponent* collider);
 
+	std::vector<CollideComponent*> GetColliders() const { return mColliders; }
+
 	void AddSprite(class SpriteComponent* sprite);
 	void RemoveSprite(class SpriteComponent* sprite);
 
@@ -58,7 +60,6 @@ public:
 	TTF_Font*  GetFont() { return mFont; }
 
 private:
-	std::vector<CollideComponent*> mColliders;
 	void ProcessInput();
 	void UpdateGame();
 	void GenerateOutput();
@@ -90,6 +91,7 @@ private:
 	// Player
 	class Felix* mFelix; 
 
+	std::vector<CollideComponent*> mColliders;
 	std::queue<ShootComponent<Enemy>*> mSpawners;
 	bool mIsSpawning;
 	int mCoolDown;
