@@ -7,6 +7,8 @@ Felix::Felix(Game* game)
 	,mRightSpeed(0.0f)
 	,mDownSpeed(0.0f)
 	,mAnimState(AnimState::Walking)
+	,mFallWindow(nullptr)
+	,mCurrentWindow(nullptr)
 {
 	mAsc = new AnimSpriteComponent(this);
 
@@ -79,37 +81,45 @@ void Felix::UpdateActor(float deltaTime)
 	float wWidth  = GetGame()->GetWindowWidth();
 	float wHeight = GetGame()->GetWindowHeight();
 
-	// todo: collide with floors
 	auto colliders = GetGame()->GetColliders();
 
 	bool collidedAny = false;
+
+	// stop at each floor
 	for (CollideComponent* c : colliders)
 	{
-		if (c->Collide(this) && mDownSpeed >= 0) 
+		if (c != mFallWindow)
 		{
-			Vector2 cPos = c->GetOwner()->GetPosition();
-			float cHeight = c->GetOwner()->GetHeight();
-
-			float cBottom = cPos.y + cHeight / 2.0f;
-
-			if ( (pos.y < cBottom) &&
-				 (pos.y > cBottom - GetHeight() / 2.0f))
+			if (c->Collide(this) && mDownSpeed >= 0)
 			{
-				pos.y = cBottom - GetHeight() / 2.0f;
+				Vector2 cPos = c->GetOwner()->GetPosition();
+				float cHeight = c->GetOwner()->GetHeight();
 
-				collidedAny = true;
-				mDownSpeed = 0;
-				mJumper->EndJump();
+				float cBottom = cPos.y + cHeight / 2.0f;
+
+				if ((pos.y < cBottom) &&
+					(pos.y > cBottom - GetHeight() / 2.0f))
+				{
+					pos.y = cBottom - GetHeight() / 2.0f;
+
+					collidedAny = true;
+					mDownSpeed = 0;
+
+					mJumper->EndFall();
+					mJumper->EndJump();
+
+					mCurrentWindow = c;
+					mFallWindow = nullptr;
+				}
 			}
 		}
+
+		if (!collidedAny)
+		{
+			mCurrentWindow = nullptr;
+			mJumper->Fall();
+		}
 	}
-
-	if (!collidedAny)
-	{
-		mJumper->Fall();
-	}
-
-
 
 	if (pos.x < GetWidth() / 2.0f)
 	{
@@ -128,6 +138,7 @@ void Felix::UpdateActor(float deltaTime)
 	{
 		pos.y = wHeight - GetHeight() / 2.0f;
 
+		mJumper->EndFall();
 		mJumper->EndJump();
 	}
 
@@ -180,7 +191,8 @@ void Felix::ProcessKeyboard(const uint8_t* state)
 	}
 	if (state[SDL_SCANCODE_S])
 	{
-		// todo: fall faster
+		// todo: fall
+		mJumper->Fall();
 		// or squat
 
 		//mDownSpeed += 250.0f;

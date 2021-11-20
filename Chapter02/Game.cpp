@@ -10,7 +10,7 @@
 #include "SDL/SDL_image.h"
 
 #include "Actor.h"
-#include "BGSpriteComponent.h"
+#include "ChildSpriteComponent.h"
 #include "Building.h"
 #include "ChildActor.h"
 #include "Game.h"
@@ -246,18 +246,18 @@ void Game::LoadData()
 		windowWidth, windowHeight);
 	
 	// Create the "far back" background
-	BGSpriteComponent* bg = new BGSpriteComponent(temp);
-	bg->SetScreenSize(Vector2(GetWindowWidth(), GetWindowHeight()));//set the screen size for the background to fit in
-	//create a vector
-	std::vector<SDL_Texture*> bgtexs = {
-		GetTexture("Assets/PlaceHolder.png")
-	};
-	//set this vector to the background component
-	bg->SetBGTextures(bgtexs);
-	bg->SetScrollSpeed(0.0f);
+	auto bg = new ChildSpriteComponent(temp, 10);
+
+	//set the screen size for the background to fit in
+	bg->SetParentSize(Vector2(windowWidth, windowHeight));
+	
+	auto bgtex =  GetTexture("Assets/PlaceHolder.png");
+	
+	//set texture to the sprite component
+	bg->SetTexture(bgtex);
 	
 	// Create the building
-	Building* predio = new Building(this, 
+	Building* building = new Building(this, 
 		windowPos.x, windowPos.y, 
 		windowWidth, windowHeight);
 

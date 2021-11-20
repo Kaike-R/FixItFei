@@ -1,6 +1,7 @@
 #pragma once
 #include "Actor.h"
 #include "AnimSpriteComponent.h"
+#include "CollideComponent.h"
 #include "JumpComponent.h"
 
 class Felix :
@@ -24,6 +25,8 @@ public:
 
     float GetRightSpeed() const { return mRightSpeed; }
     void SetRightSpeed(float rs) { mRightSpeed = rs; }
+
+    void SetFallWindow() { mFallWindow = mCurrentWindow; }
     
 private:
     float mRightSpeed;
@@ -34,6 +37,9 @@ private:
     int mCoolDown;
 
     JumpComponent* mJumper;
+
+    CollideComponent* mCurrentWindow;
+    CollideComponent* mFallWindow;
     
     AnimState mAnimState;
 

@@ -12,7 +12,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="BrokenSpriteComponent.cpp" />
+    <ClCompile Include="ChildSpriteComponent.cpp" />
     <ClCompile Include="Felix.cpp" />
+    <ClCompile Include="FixComponent.cpp" />
     <ClCompile Include="Floor.cpp" />
     <ClCompile Include="AnimSpriteComponent.cpp" />
     <ClCompile Include="BGSpriteComponent.cpp" />
@@ -35,7 +38,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="BrokenSpriteComponent.h" />
+    <ClInclude Include="ChildSpriteComponent.h" />
     <ClInclude Include="Felix.h" />
+    <ClInclude Include="FixComponent.h" />
     <ClInclude Include="Floor.h" />
     <ClInclude Include="AnimSpriteComponent.h" />
     <ClInclude Include="BGSpriteComponent.h" />

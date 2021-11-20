@@ -70,6 +70,15 @@
     <ClCompile Include="JumpComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BrokenSpriteComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FixComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChildSpriteComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CollideComponent.h" />
@@ -92,5 +101,8 @@
     <ClInclude Include="Building.h" />
     <ClInclude Include="Felix.h" />
     <ClInclude Include="JumpComponent.h" />
+    <ClInclude Include="BrokenSpriteComponent.h" />
+    <ClInclude Include="FixComponent.h" />
+    <ClInclude Include="ChildSpriteComponent.h" />
   </ItemGroup>
 </Project>

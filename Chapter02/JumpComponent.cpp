@@ -6,8 +6,9 @@ JumpComponent::JumpComponent(Felix* owner,
 	float g,
 	int updateOrder)
 	:Component(owner, updateOrder), 
-	mGravity(g), 
-	mIsJumping(false), 
+	mGravity(g),
+	mIsJumping(false),
+	mIsFalling(false),
 	mFelix(owner)
 {
 	
@@ -20,7 +21,7 @@ JumpComponent::~JumpComponent()
 
 void JumpComponent::Jump() 
 {
-	if (!mIsJumping)
+	if (!mIsJumping && !mIsFalling)
 	{
 		Felix* felix = GetFelix();
 
@@ -32,23 +33,34 @@ void JumpComponent::Jump()
 
 void JumpComponent::Fall()
 {
-	if (!mIsJumping)
+	if (!mIsJumping && !mIsFalling)
 	{
 		Felix* felix = GetFelix();
+		felix->SetFallWindow();
+		//mFallPos = felix->GetPosition();
 
 		felix->SetDownSpeed(0);
 
-		mIsJumping = true;
+		mIsFalling = true;
 	}
 }
 
 void JumpComponent::Update(float deltaTime) 
 {
-	if (mIsJumping)
+	Felix* felix = GetFelix();
+	//Vector2 currentPos = felix->GetPosition();
+	//float height = felix->GetHeight();
+
+	if (mIsJumping || mIsFalling)
 	{
-		Felix* felix = GetFelix();
 		float downSpeed = felix->GetDownSpeed();
 
 		felix->SetDownSpeed(downSpeed + mGravity * deltaTime);
 	}
+
+	//if (mIsFalling && currentPos.y > mFallPos.y + height / 3.0f) 
+	//{
+	//	mIsFalling = false;
+	//	mIsJumping = true;
+	//}
 }
