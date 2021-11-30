@@ -1,32 +1,46 @@
 #include "AnimSpriteComponent.h"
-#include "Felix.h"
+#include "Ralph.h"
 #include "Game.h"
-#include "CollideComponent.h"
 
-Felix::Felix(Game* game)
+Ralph::Ralph(Game* game)
 	:Actor(game, false)
-	, mRightSpeed(0.0f)
-	, mDownSpeed(0.0f)
-	, mAnimState(AnimState::Walking)
-	, mFallFloor(nullptr)
-	, mCurrentFloor(nullptr)
+	,mRightSpeed(0.0f)
+	,mDownSpeed(0.0f)
+	,mAnimState(AnimState::Walking)
+	,mFallWindow(nullptr)
+	,mCurrentWindow(nullptr)
 {
 	mAsc = new AnimSpriteComponent(this);
 
 	mAnimsWalk = {
-		game->GetTexture("Assets/Felix1.png"),
-		game->GetTexture("Assets/Felix2.png"),
-		game->GetTexture("Assets/Felix3.png"),
-		game->GetTexture("Assets/Felix4.png"),
-
+		game->GetTexture("Assets/Ralph1.png"),
+		game->GetTexture("Assets/Ralph2.png"),
+		game->GetTexture("Assets/Ralph3.png"),
 	};
 
 	mAnimsJump = {
-		game->GetTexture("Assets/Felix8.png"),
+		game->GetTexture("Assets/Character07.png"),
+		game->GetTexture("Assets/Character08.png"),
+		game->GetTexture("Assets/Character09.png"),
+		game->GetTexture("Assets/Character10.png"),
+		game->GetTexture("Assets/Character11.png"),
+		game->GetTexture("Assets/Character12.png"),
+		game->GetTexture("Assets/Character13.png"),
+		game->GetTexture("Assets/Character14.png"),
+		game->GetTexture("Assets/Character15.png"),
 	};
 
-	mAnimsFix = {
-		game->GetTexture("Assets/Felix10.png"),
+	mAnimsWreck = {
+		game->GetTexture("Assets/Ralph4.png"),
+		game->GetTexture("Assets/Ralph5.png"),
+		game->GetTexture("Assets/Ralph6.png"),
+		game->GetTexture("Assets/Ralph7.png"),
+		game->GetTexture("Assets/Ralph8.png"),
+		game->GetTexture("Assets/Ralph9.png"),
+		game->GetTexture("Assets/Ralph10.png"),
+		game->GetTexture("Assets/Ralph11.png"),
+		game->GetTexture("Assets/Ralph8.png"),
+		game->GetTexture("Assets/Ralph1.png"),
 	};
 
 	mAsc->SetAnimTextures(mAnimsWalk);
@@ -36,15 +50,11 @@ Felix::Felix(Game* game)
 
 	mJumper = new JumpComponent(this, 5 * mHeight);
 
-	mIsFixing = false;
+	mIsWreck = false;
 	mCoolDown = 0;
-
-	mCollider = new CollideComponent(this);
-
-	mFixer = new FixComponent(this);
 }
 
-void Felix::UpdateActor(float deltaTime)
+void Ralph::UpdateActor(float deltaTime)
 {
 	Actor::UpdateActor(deltaTime);
 
@@ -54,9 +64,9 @@ void Felix::UpdateActor(float deltaTime)
 		mAnimState = AnimState::Walking;
 	}
 
-	if (mIsFixing)
+	if (mIsWreck)
 	{
-		mIsFixing = false;
+		mIsWreck = false;
 
 		if (mCoolDown < 1)
 		{
@@ -77,14 +87,12 @@ void Felix::UpdateActor(float deltaTime)
 
 	auto colliders = GetGame()->GetColliders();
 
-	auto brokenWindows = GetGame()->GetBrokenWindows();
-
 	bool collidedAny = false;
 
 	// stop at each floor
 	for (CollideComponent* c : colliders)
 	{
-		if (c != mFallFloor)
+		if (c != mFallWindow)
 		{
 			if (c->Collide(this) && mDownSpeed >= 0)
 			{
@@ -104,36 +112,18 @@ void Felix::UpdateActor(float deltaTime)
 					mJumper->EndFall();
 					mJumper->EndJump();
 
-					mCurrentFloor = c;
-					mFallFloor = nullptr;
+					mCurrentWindow = c;
+					mFallWindow = nullptr;
 				}
 			}
 		}
-	}
 
-	if (!collidedAny)
-	{
-		mCurrentFloor = nullptr;
-		mJumper->Fall();
-	}
-
-	collidedAny = false;
-
-	for (BrokenSpriteComponent* b : brokenWindows)
-	{
-		if (mCollider->Collide(b->GetOwner()))
+		if (!collidedAny)
 		{
-			collidedAny = true;
-			mCurrentBrokenWindow = b;
+			mCurrentWindow = nullptr;
+			mJumper->Fall();
 		}
 	}
-
-	if (!collidedAny)
-	{
-		mCurrentBrokenWindow = nullptr;
-	}
-
-
 
 	if (pos.x < GetWidth() / 2.0f)
 	{
@@ -159,7 +149,7 @@ void Felix::UpdateActor(float deltaTime)
 	SetPosition(pos);
 }
 
-void Felix::ProcessKeyboard(const uint8_t* state)
+void Ralph::ProcessKeyboard(const uint8_t* state)
 {
 	mRightSpeed = 0.0f;
 	
@@ -222,14 +212,11 @@ void Felix::ProcessKeyboard(const uint8_t* state)
 	{
 		//mIsFixing = true;
 		//mFixer->Fix();
-		if (mCurrentBrokenWindow != nullptr) {
-			mFixer->Fix(mCurrentBrokenWindow);
-		}
 
-		if (mAnimState != AnimState::Fixing)
+		if (mAnimState != AnimState::Wreck)
 		{
-			mAsc->SetAnimTextures(mAnimsFix);
-			mAnimState = AnimState::Fixing;
+			mAsc->SetAnimTextures(mAnimsWreck);
+			mAnimState = AnimState::Wreck;
 		}
 	}
 
