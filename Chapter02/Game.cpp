@@ -393,7 +393,7 @@ void Game::RemoveSprite(SpriteComponent* sprite)
 	mSprites.erase(iter);
 }
 
-void Game::AddCollider(CollideComponent* collider)
+void Game::AddFloorCollider(CollideComponent* collider)
 {
 	// Find the insertion point in the sorted vector
 	// (The first element with a higher draw order than me)
@@ -414,12 +414,42 @@ void Game::AddCollider(CollideComponent* collider)
 }
 
 //remove sprite
-void Game::RemoveCollider(CollideComponent* collider)
+void Game::RemoveFloorCollider(CollideComponent* collider)
 {
 	// (We can't swap because it ruins ordering)
 	auto iter = std::find(mColliders.begin(), mColliders.end(), collider);
 	mColliders.erase(iter);
 }
+
+///Broken Component
+void Game::AddBrokenWindow(BrokenSpriteComponent* brokenWindow)
+{
+	// Find the insertion point in the sorted vector
+	// (The first element with a higher draw order than me)
+	int myUpdateOrder = brokenWindow->GetUpdateOrder();
+	auto iter = mBrokenWindows.begin();
+	for (;
+		iter != mBrokenWindows.end();
+		++iter)
+	{
+		if (myUpdateOrder < (*iter)->GetUpdateOrder())
+		{
+			break;
+		}
+	}
+
+	// Inserts element before position of iterator
+	mBrokenWindows.insert(iter, brokenWindow);
+}
+
+//remove sprite
+void Game::RemoveBrokenWindow(BrokenSpriteComponent* brokenWindow)
+{
+	// (We can't swap because it ruins ordering)
+	auto iter = std::find(mBrokenWindows.begin(), mBrokenWindows.end(), brokenWindow);
+	mBrokenWindows.erase(iter);
+}
+///End of Broken Component
 
 void Game::DrawText(const char* fmt, ...) {
 	char buffer[BUFFSIZE];

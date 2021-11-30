@@ -1,4 +1,5 @@
 #include "FixComponent.h"
+#include "Felix.h"
 
 
 FixComponent::FixComponent(Felix* owner,
@@ -6,6 +7,11 @@ FixComponent::FixComponent(Felix* owner,
     :Component(owner, updateOrder)
 {
     
+}
+
+FixComponent::~FixComponent() 
+{
+
 }
 
 void FixComponent::Update(float deltaTime)

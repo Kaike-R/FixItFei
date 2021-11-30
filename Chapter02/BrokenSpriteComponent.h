@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "ChildSpriteComponent.h"
+#include "Actor.h"
 
 class BrokenSpriteComponent :
     public ChildSpriteComponent
@@ -10,6 +11,8 @@ class BrokenSpriteComponent :
 public:
     BrokenSpriteComponent(class Actor* owner,
         int drawOrder = 100);
+
+    ~BrokenSpriteComponent();
 
     void Update(float deltaTime) override;
 
@@ -22,4 +25,5 @@ private:
 
     // [0..3] -> not broken to most broken
     int mHowBroken;
+
 };

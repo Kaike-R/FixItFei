@@ -3,6 +3,8 @@
 #include "AnimSpriteComponent.h"
 #include "CollideComponent.h"
 #include "JumpComponent.h"
+#include "FixComponent.h"
+#include "BrokenSpriteComponent.h"
 
 class Felix :
     public Actor
@@ -26,7 +28,7 @@ public:
     float GetRightSpeed() const { return mRightSpeed; }
     void SetRightSpeed(float rs) { mRightSpeed = rs; }
 
-    void SetFallWindow() { mFallWindow = mCurrentWindow; }
+    void SetFallWindow() { mFallFloor = mCurrentFloor; }
     
 private:
     float mRightSpeed;
@@ -38,8 +40,12 @@ private:
 
     JumpComponent* mJumper;
 
-    CollideComponent* mCurrentWindow;
-    CollideComponent* mFallWindow;
+    CollideComponent* mCurrentFloor;
+    CollideComponent* mFallFloor;
+    CollideComponent* mCollider;
+    FixComponent* mFixer;
+    
+    BrokenSpriteComponent* mCurrentBrokenWindow;
     
     AnimState mAnimState;
 

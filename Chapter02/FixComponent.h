@@ -2,14 +2,14 @@
 
 #include "BrokenSpriteComponent.h"
 #include "Component.h"
-#include "Felix.h"
 
 class FixComponent :
     public Component
 {
 public:
-    FixComponent(Felix* owner,
+    FixComponent(class Felix* owner,
         int updateOrder = 100);
+    ~FixComponent();
 
     void Update(float deltaTime) override;
 

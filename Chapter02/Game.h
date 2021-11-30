@@ -35,10 +35,15 @@ public:
 	void AddActor(class Actor* actor);
 	void RemoveActor(class Actor* actor);
 
-	void AddCollider(class CollideComponent* collider);
-	void RemoveCollider(class CollideComponent* collider);
+	void AddFloorCollider(class CollideComponent* collider);
+	void RemoveFloorCollider(class CollideComponent* collider);
+
+	void AddBrokenWindow(class BrokenSpriteComponent* brokenWindow);
+	void RemoveBrokenWindow(class BrokenSpriteComponent* brokenWindow);
 
 	std::vector<CollideComponent*> GetColliders() const { return mColliders; }
+
+	std::vector<BrokenSpriteComponent*> GetBrokenWindows() const { return mBrokenWindows; }
 
 	void AddSprite(class SpriteComponent* sprite);
 	void RemoveSprite(class SpriteComponent* sprite);
@@ -92,6 +97,7 @@ private:
 	class Felix* mFelix; 
 
 	std::vector<CollideComponent*> mColliders;
+	std::vector<BrokenSpriteComponent*> mBrokenWindows;
 	std::queue<ShootComponent<Enemy>*> mSpawners;
 	bool mIsSpawning;
 	int mCoolDown;

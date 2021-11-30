@@ -1,5 +1,6 @@
 #pragma once
 #include "ChildActor.h"
+#include "BrokenSpriteComponent.h"
 class Window :
     public ChildActor
 {
@@ -10,7 +11,7 @@ public:
 
 protected:
     bool isBroken = false;
-    
+    BrokenSpriteComponent* mBrokenWindow;
 
 };
 

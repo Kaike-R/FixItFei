@@ -1,14 +1,15 @@
 #include "AnimSpriteComponent.h"
 #include "Felix.h"
 #include "Game.h"
+#include "CollideComponent.h"
 
 Felix::Felix(Game* game)
 	:Actor(game, false)
-	,mRightSpeed(0.0f)
-	,mDownSpeed(0.0f)
-	,mAnimState(AnimState::Walking)
-	,mFallWindow(nullptr)
-	,mCurrentWindow(nullptr)
+	, mRightSpeed(0.0f)
+	, mDownSpeed(0.0f)
+	, mAnimState(AnimState::Walking)
+	, mFallFloor(nullptr)
+	, mCurrentFloor(nullptr)
 {
 	mAsc = new AnimSpriteComponent(this);
 
@@ -48,6 +49,10 @@ Felix::Felix(Game* game)
 
 	mIsFixing = false;
 	mCoolDown = 0;
+
+	mCollider = new CollideComponent(this);
+
+	mFixer = new FixComponent(this);
 }
 
 void Felix::UpdateActor(float deltaTime)
@@ -83,12 +88,14 @@ void Felix::UpdateActor(float deltaTime)
 
 	auto colliders = GetGame()->GetColliders();
 
+	auto brokenWindows = GetGame()->GetBrokenWindows();
+
 	bool collidedAny = false;
 
 	// stop at each floor
 	for (CollideComponent* c : colliders)
 	{
-		if (c != mFallWindow)
+		if (c != mFallFloor)
 		{
 			if (c->Collide(this) && mDownSpeed >= 0)
 			{
@@ -108,18 +115,36 @@ void Felix::UpdateActor(float deltaTime)
 					mJumper->EndFall();
 					mJumper->EndJump();
 
-					mCurrentWindow = c;
-					mFallWindow = nullptr;
+					mCurrentFloor = c;
+					mFallFloor = nullptr;
 				}
 			}
 		}
+	}
 
-		if (!collidedAny)
+	if (!collidedAny)
+	{
+		mCurrentFloor = nullptr;
+		mJumper->Fall();
+	}
+
+	collidedAny = false;
+
+	for (BrokenSpriteComponent* b : brokenWindows)
+	{
+		if (mCollider->Collide(b->GetOwner()))
 		{
-			mCurrentWindow = nullptr;
-			mJumper->Fall();
+			collidedAny = true;
+			mCurrentBrokenWindow = b;
 		}
 	}
+
+	if (!collidedAny)
+	{
+		mCurrentBrokenWindow = nullptr;
+	}
+
+
 
 	if (pos.x < GetWidth() / 2.0f)
 	{
@@ -208,6 +233,9 @@ void Felix::ProcessKeyboard(const uint8_t* state)
 	{
 		//mIsFixing = true;
 		//mFixer->Fix();
+		if (mCurrentBrokenWindow != nullptr) {
+			mFixer->Fix(mCurrentBrokenWindow);
+		}
 
 		if (mAnimState != AnimState::Fixing)
 		{

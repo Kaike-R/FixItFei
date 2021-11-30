@@ -9,12 +9,12 @@ CollideComponent::CollideComponent(class Actor* owner, int updateOrder)
 {
 	//printf("Collider.w = %.2f\n", owner->GetWidth());
 
-	mOwner->GetGame()->AddCollider(this);
+	mOwner->GetGame()->AddFloorCollider(this);
 
 }
 CollideComponent::~CollideComponent() 
 {
-	mOwner->GetGame()->RemoveCollider(this);
+	mOwner->GetGame()->RemoveFloorCollider(this);
 }
 
 bool CollideComponent::Collide(Actor* other) 
