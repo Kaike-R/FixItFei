@@ -48,7 +48,7 @@ Ralph::Ralph(Game* game)
 	mWidth = mAsc->GetTexWidth();
 	mHeight = mAsc->GetTexHeight();
 
-	mJumper = new JumpComponent(this, 5 * mHeight);
+	//mJumper = new JumpComponent(this, 5 * mHeight);
 
 	mIsWreck = false;
 	mCoolDown = 0;

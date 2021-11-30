@@ -7,12 +7,8 @@ Enemy::Enemy(Game* game, bool timeWarp, float speed)
 {
 	AnimSpriteComponent* asc = new AnimSpriteComponent(this);
 	std::vector<SDL_Texture*> anims = {
-		game->GetTexture("Assets/Enemy01.png"),
-		game->GetTexture("Assets/Enemy02.png"),
-		game->GetTexture("Assets/Enemy03.png"),
-		game->GetTexture("Assets/Enemy04.png"),
-		game->GetTexture("Assets/Enemy05.png"),
-		game->GetTexture("Assets/Enemy06.png")
+		game->GetTexture("Assets/Pato1.png"),
+		game->GetTexture("Assets/Pato2.png"),
 	};
 
 	asc->SetAnimTextures(anims);

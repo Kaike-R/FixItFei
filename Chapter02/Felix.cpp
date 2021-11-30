@@ -57,11 +57,11 @@ void Felix::UpdateActor(float deltaTime)
 
 	if (mIsFixing)
 	{
-		mIsFixing = false;
 
 		if (mCoolDown < 1)
 		{
-			mCoolDown = 10;
+			mIsFixing = false;
+			mCoolDown = 25;
 
 			//mFixer->Fix();
 		}
@@ -223,7 +223,8 @@ void Felix::ProcessKeyboard(const uint8_t* state)
 	{
 		//mIsFixing = true;
 		//mFixer->Fix();
-		if (mCurrentBrokenWindow != nullptr) {
+		if (mCurrentBrokenWindow != nullptr && mIsFixing == false) {
+			mIsFixing = true;
 			mFixer->Fix(mCurrentBrokenWindow);
 		}
 

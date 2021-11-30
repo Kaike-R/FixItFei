@@ -79,6 +79,9 @@
     <ClCompile Include="ChildSpriteComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Ralph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CollideComponent.h" />
@@ -104,5 +107,6 @@
     <ClInclude Include="BrokenSpriteComponent.h" />
     <ClInclude Include="FixComponent.h" />
     <ClInclude Include="ChildSpriteComponent.h" />
+    <ClInclude Include="Ralph.h" />
   </ItemGroup>
 </Project>

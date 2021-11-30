@@ -33,7 +33,7 @@ bool CollideComponent::Collide(Actor* other)
 
 	return ( (ownerPos.x - ownerWidth / 2.0f < otherPos.x + otherWidth / 2.0f &&
 		      otherPos.x - otherWidth / 2.0f < ownerPos.x + ownerWidth / 2.0f) &&
-		     (ownerPos.y - ownerHeight < otherPos.y + otherHeight / 2.0f &&
-			  otherPos.y - otherHeight < ownerPos.y + ownerHeight / 2.0f));
+		     (ownerPos.y - ownerHeight/ 2.0f < otherPos.y + otherHeight / 2.0f &&
+			  otherPos.y - otherHeight/ 2.0f < ownerPos.y + ownerHeight / 2.0f));
 
 }
