@@ -30,9 +30,10 @@ Felix::Felix(Game* game)
 	};
 
 	mAsc->SetAnimTextures(mAnimsWalk);
+	SetScale(3.0);
 
-	mWidth = mAsc->GetTexWidth();
-	mHeight = mAsc->GetTexHeight();
+	mWidth = mAsc->GetTexWidth()*(mScale);
+	mHeight = mAsc->GetTexHeight()*(mScale);
 
 	mJumper = new JumpComponent(this, 5 * mHeight);
 
