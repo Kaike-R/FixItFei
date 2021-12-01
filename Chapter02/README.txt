@@ -1,11 +1,10 @@
 Instruções:
 
--Usar as teclas W, S, A e D para se movimentar para cima, para baixo, para frente e para trás, respectivamente.
+-Usar as teclas W, S, A e D para se movimentar para pular, para descer um andar, para direita e para esquerda, respectivamente.
 
--Utilizar a tecla P para atirar.
+-Utilizar a tecla P para consertar.
 
--Utilizar a tecla T para acionar o TimeWarp (desaceleração do tempo).
-
+- Objetivo: Consertar todas as janelas sem ser acertado pelos patos, todas as janelas tem 4 fases de conserto.
 
 Integrantes do Grupo:
 
@@ -13,4 +12,3 @@ Markel Macedo
 Danilo Bizarria
 Matheus Ferreira
 Kaike Zuanetti
-Rafael Lino
