@@ -37,3 +37,5 @@ bool CollideComponent::Collide(Actor* other)
 			  otherPos.y - otherHeight/ 2.0f < ownerPos.y + ownerHeight / 2.0f));
 
 }
+
+

@@ -5,6 +5,7 @@
 Enemy::Enemy(Game* game, bool timeWarp, float speed)
 	:Projectile(game, timeWarp, speed)
 {
+	game->AddDuck(this);
 	AnimSpriteComponent* asc = new AnimSpriteComponent(this);
 	std::vector<SDL_Texture*> anims = {
 		game->GetTexture("Assets/Pato1.png"),
@@ -12,9 +13,9 @@ Enemy::Enemy(Game* game, bool timeWarp, float speed)
 	};
 
 	asc->SetAnimTextures(anims);
-
-	mWidth = asc->GetTexWidth();
-	mHeight = asc->GetTexHeight();
+	SetScale(1.5);
+	mWidth = asc->GetTexWidth() * mScale;
+	mHeight = asc->GetTexHeight() * mScale;
 }
 
 void Enemy::UpdateActor(float deltaTime)

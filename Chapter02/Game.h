@@ -41,9 +41,15 @@ public:
 	void AddBrokenWindow(class BrokenSpriteComponent* brokenWindow);
 	void RemoveBrokenWindow(class BrokenSpriteComponent* brokenWindow);
 
+	void AddDuck(class Enemy* duck);
+	void RemoveDuck(class Enemy* duck);
+	
+
 	std::vector<CollideComponent*> GetColliders() const { return mColliders; }
 
 	std::vector<BrokenSpriteComponent*> GetBrokenWindows() const { return mBrokenWindows; }
+
+	std::vector<Enemy*> GetDucks() const { return mDucks;  };
 
 	void AddSprite(class SpriteComponent* sprite);
 	void RemoveSprite(class SpriteComponent* sprite);
@@ -57,6 +63,10 @@ public:
 	void SetTimeWarp(bool tFlag) { mIsInTimeWarp = tFlag; };
 
 	bool GetTimeWarp() { return mIsInTimeWarp; };
+
+	bool GetDead() { return mFlagDead; };
+
+	void SetDead() { mFlagDead = true; };
 
 	void DrawText(const char* fmt, ...);
 
@@ -98,14 +108,16 @@ private:
 
 	std::vector<CollideComponent*> mColliders;
 	std::vector<BrokenSpriteComponent*> mBrokenWindows;
+	std::vector<Enemy*> mDucks;
 	std::queue<ShootComponent<Enemy>*> mSpawners;
 	bool mIsSpawning;
 	int mCoolDown;
+	bool mFlagDead;
 
 	bool mIsInTimeWarp;
 
 	TTF_Font* mFont;
 	int mScore;
-
+	int count = 0;
 	TextComponent* mText;
 };

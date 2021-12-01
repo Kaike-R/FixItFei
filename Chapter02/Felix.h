@@ -12,9 +12,10 @@ class Felix :
 public:
     enum class AnimState
     {
-        Walking, 
-        Jumping, 
-        Fixing
+        Walking,
+        Jumping,
+        Fixing,
+        Dead
     };
 
     Felix(class Game* game);
@@ -54,6 +55,7 @@ private:
     std::vector<SDL_Texture*> mAnimsWalk;
     std::vector<SDL_Texture*> mAnimsJump;
     std::vector<SDL_Texture*> mAnimsFix;
+    std::vector<SDL_Texture*> mAnimsDead;
 
     // FixComponent* mFixer;
 };

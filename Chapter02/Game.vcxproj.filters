@@ -109,4 +109,9 @@
     <ClInclude Include="ChildSpriteComponent.h" />
     <ClInclude Include="Ralph.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="VT323-Regular.ttf">
+      <Filter>Source Files</Filter>
+    </Font>
+  </ItemGroup>
 </Project>

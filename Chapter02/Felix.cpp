@@ -5,6 +5,7 @@
 
 Felix::Felix(Game* game)
 	:Actor(game, false)
+
 	, mRightSpeed(0.0f)
 	, mDownSpeed(0.0f)
 	, mAnimState(AnimState::Walking)
@@ -29,6 +30,10 @@ Felix::Felix(Game* game)
 		game->GetTexture("Assets/Felix10.png"),
 	};
 
+	mAnimsDead = {
+		game->GetTexture("Assets/Felix11.png"),
+	};
+
 	mAsc->SetAnimTextures(mAnimsWalk);
 	SetScale(3.0);
 
@@ -43,6 +48,7 @@ Felix::Felix(Game* game)
 	mCollider = new CollideComponent(this);
 
 	mFixer = new FixComponent(this);
+
 }
 
 void Felix::UpdateActor(float deltaTime)
@@ -79,6 +85,8 @@ void Felix::UpdateActor(float deltaTime)
 	auto colliders = GetGame()->GetColliders();
 
 	auto brokenWindows = GetGame()->GetBrokenWindows();
+
+	auto ducks = GetGame()->GetDucks();
 
 	bool collidedAny = false;
 
@@ -134,6 +142,18 @@ void Felix::UpdateActor(float deltaTime)
 		mCurrentBrokenWindow = nullptr;
 	}
 
+
+	for (Enemy* e : ducks)
+	{
+		if (mCollider->Collide(e))
+		{
+			mAnimState = AnimState::Dead;
+			
+			//mState = EDead;
+			mGame->SetDead();
+			
+		}
+	}
 
 
 	if (pos.x < GetWidth() / 2.0f)

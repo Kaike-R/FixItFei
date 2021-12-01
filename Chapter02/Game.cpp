@@ -71,7 +71,7 @@ bool Game::Initialize()
 	}
 
 	LoadData();
-
+	
 	mTicksCount = SDL_GetTicks();
 
 	mCoolDown = 5;
@@ -145,6 +145,7 @@ void Game::UpdateGame()
 	}
 	mPendingActors.clear();
 
+
 	// Add any dead actors to a temp vector
 	std::vector<Actor*> deadActors;
 	for (auto actor : mActors)
@@ -160,8 +161,7 @@ void Game::UpdateGame()
 	{
 		delete actor;
 	}
-
-	/*
+	
 	auto& spawner = mSpawners.front();
 	if (mCoolDown < 1)
 	{
@@ -171,7 +171,7 @@ void Game::UpdateGame()
 		mSpawners.push(spawner);
 		mSpawners.pop();
 	}
-	*/
+	
 
 	if (mCoolDown > 0) mCoolDown -= 1;
 
@@ -194,12 +194,96 @@ void Game::GenerateOutput()
 	SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, 255);
 	SDL_RenderClear(mRenderer);
 	
-	// Draw all sprite components
-	for (auto sprite : mSprites)
+
+	bool anyBroken = false;
+
+	for (auto x : mBrokenWindows)
 	{
-		sprite->Draw(mRenderer);
+		if (x->GetHowBroken() > 0)
+		{
+			anyBroken = true;
+		}
+
 	}
-	SDL_RenderPresent(mRenderer);
+
+	if (anyBroken == false)
+	{
+		// Create background
+		float windowWidth = GetWindowWidth();
+		float windowHeight = GetWindowHeight();
+		Vector2 windowPos = Vector2(windowWidth / 2.0f, windowHeight / 2.0f);
+
+		// Create actor for the background (this doesn't need a subclass)
+		Actor* temp = new ChildActor(this,
+			windowPos.x, windowPos.y,
+			windowWidth, windowHeight);
+
+		// Create the "far back" background
+		auto bg = new ChildSpriteComponent(temp, 10);
+
+		//set the screen size for the background to fit in
+		bg->SetParentSize(Vector2(windowWidth, windowHeight));
+
+		auto bgtex = GetTexture("Assets/Win.png");
+
+		//set texture to the sprite component
+		bg->SetTexture(bgtex);
+
+
+		bg->Draw(mRenderer);
+		//DrawText("You Win");
+		printf("You Win ");
+		SDL_RenderPresent(mRenderer);
+	}
+	else if (mFlagDead == true)
+	{
+		if (count == 0)
+		{
+			//SDL_RenderPresent(mRenderer);
+			count++;
+		}
+		//mText->SetText(mRenderer, "Game Over");
+		// mText->Draw(mRenderer);
+		float windowWidth = GetWindowWidth();
+		float windowHeight = GetWindowHeight();
+		Vector2 windowPos = Vector2(windowWidth / 2.0f, windowHeight / 2.0f);
+
+		// Create actor for the background (this doesn't need a subclass)
+		Actor* temp = new ChildActor(this,
+			windowPos.x, windowPos.y,
+			windowWidth, windowHeight);
+
+		// Create the "far back" background
+		auto bg = new ChildSpriteComponent(temp, 10);
+
+		//set the screen size for the background to fit in
+		bg->SetParentSize(Vector2(windowWidth, windowHeight));
+
+		auto bgtex = GetTexture("Assets/Lose.png");
+
+		//set texture to the sprite component
+		bg->SetTexture(bgtex);
+		
+
+		bg->Draw(mRenderer);
+		//DrawText("Game Over");
+		printf("Game Over");
+		SDL_RenderPresent(mRenderer);
+
+	}
+	else 
+	{
+		for (auto sprite : mSprites)
+		{
+			sprite->Draw(mRenderer);
+		}
+		mText->SetText(mRenderer, "s Game Over s");
+		mText->Draw(mRenderer);
+		SDL_RenderPresent(mRenderer);
+	}
+	// Draw all sprite components
+	
+	
 
 	
 }
@@ -219,7 +303,7 @@ void Game::LoadData()
 	//mShip->SetScale(1.5f);
 
 	// enemy spawners' positions
-	/*
+	
 	Actor* top = new Actor(this);
 	top->SetPosition(Vector2(GetWindowWidth(), GetWindowHeight() / 4.0f));
 	
@@ -233,7 +317,7 @@ void Game::LoadData()
 	mSpawners.push(new ShootComponent<Enemy>(top));
 	mSpawners.push(new ShootComponent<Enemy>(middle));
 	mSpawners.push(new ShootComponent<Enemy>(bottom));
-	*/
+	
 
 	// Create background
 	float windowWidth = GetWindowWidth();
@@ -262,10 +346,10 @@ void Game::LoadData()
 		windowWidth, windowHeight);
 
 	// To write text on screen
-	mFont = TTF_OpenFont("VT323-Regular.ttf", 24);
+	mFont = TTF_OpenFont("VT323-Regular.ttf", 48);
 
 	mText = new TextComponent(temp);
-	mText->SetText(mRenderer, "");
+	//mText->SetText(mRenderer, "");
 }
 
 void Game::UnloadData()
@@ -440,6 +524,26 @@ void Game::AddBrokenWindow(BrokenSpriteComponent* brokenWindow)
 
 	// Inserts element before position of iterator
 	mBrokenWindows.insert(iter, brokenWindow);
+}
+
+///Ducks
+void Game::AddDuck(Enemy* duck)
+{
+	// Find the insertion point in the sorted vector
+	// (The first element with a higher draw order than me)
+	//int myUpdateOrder = duck->GetUpdateOrder();
+	auto iter = mDucks.end();
+	
+
+	// Inserts element before position of iterator
+	mDucks.insert(iter, duck);
+}
+
+void Game::RemoveDuck(Enemy* duck)
+{
+	// (We can't swap because it ruins ordering)
+	auto iter = std::find(mDucks.begin(), mDucks.end(), duck);
+	mDucks.erase(iter);
 }
 
 //remove sprite

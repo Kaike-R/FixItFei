@@ -63,6 +63,9 @@
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="TextComponent.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="VT323-Regular.ttf" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BC508D87-495F-4554-932D-DD68388B63CC}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

@@ -22,6 +22,7 @@ public:
 	int GetDrawOrder() const { return mDrawOrder; }
 	int GetTexHeight() const { return mTexHeight; }
 	int GetTexWidth() const { return mTexWidth; }
+	SDL_Texture* GetTexture() const { return mTexture;  }
 protected:
 	SDL_Texture* mTexture;
 	int mDrawOrder;

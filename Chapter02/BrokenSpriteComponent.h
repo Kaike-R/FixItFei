@@ -16,6 +16,8 @@ public:
 
     void Update(float deltaTime) override;
 
+    int GetHowBroken() { return mHowBroken; }
+
     void SetBrokenTextures(const std::vector<SDL_Texture*>& textures);
 
     void Fix() { mHowBroken -= mHowBroken == 0 ? 0 : 1; }

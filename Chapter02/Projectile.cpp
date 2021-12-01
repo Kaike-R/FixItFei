@@ -8,14 +8,14 @@ Projectile::Projectile(Game* game, bool timeWarp, float speed)
 	mSpeed(speed)
 
 {
-	SpriteComponent* sc = new SpriteComponent(this);
-	SDL_Texture* texture = game->GetTexture("Assets/Laser.png");
-	sc->SetTexture(texture);
+	//SpriteComponent* sc = new SpriteComponent(this);
+	//SDL_Texture* texture = game->GetTexture("Assets/Laser.png");
+	//sc->SetTexture(texture);
 
-	mCollider = new CollideComponent(this);
+	//mCollider = new CollideComponent(this);
 
-	mWidth = sc->GetTexWidth();
-	mHeight = sc->GetTexHeight();
+	//mWidth = sc->GetTexWidth();
+	//mHeight = sc->GetTexHeight();
 }
 
 void Projectile::UpdateActor(float deltaTime) {
